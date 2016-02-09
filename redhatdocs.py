@@ -129,9 +129,9 @@ for product in products:
 			continue
 
 		try:
-			os.makedirs(dirname+"/"+doc['category'])
+			os.makedirs(outputdir +"/"+ dirname+"/"+doc['category'])
 		except OSError:
-			if not os.path.isdir(dirname+"/"+doc['category']):
+			if not os.path.isdir(outputdir +"/"+ dirname+"/"+doc['category']):
 				raise
 
 		try:
