@@ -34,10 +34,12 @@ parser.add_option("-p", "--product", action="append", default=None, dest="produc
 parser.add_option("-f", "--force", action="store_true", dest="force", help='redownload all files even if they already exist')
 parser.add_option("-l", "--list", action="store_true", dest="list", help='display availble downloads')
 parser.add_option("-o", "--outdir", action="store", default=".", dest="outdir", help='directory to write to')
+parser.add_option("-v", "--version", action="store", default="", dest="version", help='version')
 
 (opt,args) = parser.parse_args()
 doctype = opt.doctype 
 outputdir = opt.outdir 
+version = opt.version 
 
 if opt.products: 
 	products = opt.products
@@ -87,10 +89,8 @@ for product in products:
 	#getCatagories(jsondocs)
 	docs=jsondocs["docs"]
 
-	version=0.0
-	for i in jsondocs['metadata']['version']:
-		if float(i) > version:
-			version=float(i)
+	if version=="":
+            version = jsondocs['metadata']['version'][0]
 
 	if opt.section==[]:
 		sections=getCatagories(jsondocs)
@@ -103,7 +103,7 @@ for product in products:
 		for i in sections:
 			print "  \"%s\""%i
 		continue
-	#print product
+	print product
 	#print sections
 	#sys.exit(0)
 
@@ -120,12 +120,15 @@ for product in products:
 	        raise
 
 	for doc in docs:
+                #print doc
 		if doc['category'] not in sections:
 			continue
 
-		#if doc['version']!= str(version):
-		if float(doc['version'])!= version:
-			#print "version="+doc['version']+"!="+str(version)
+		#print doc['version']
+                #print version
+		if doc['version'] != version:
+		##if float(doc['version']) != float(version):
+			#print "version=%s!=%s"%(doc['version'],version)
 			continue
 
 		try:
